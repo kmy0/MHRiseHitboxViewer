@@ -1,0 +1,33 @@
+---@meta
+
+---@class via.Language : System.Enum
+---@class via.physics.ShapeType : System.Enum
+
+---@class snow.player.PlayerIndex : System.Enum
+---@class snow.enemy.EnemyDef.EmTypes : System.Enum
+---@class snow.ai.ServantDefine.ServantId : System.Enum
+---@class snow.hit.HitWeight : System.Enum
+---@class snow.hit.HitManager.Layer : System.Enum
+---@class snow.player.ActStatus : System.Enum
+---@class snow.enemy.EnemyDef.PartsGroup : System.Enum
+---@class snow.enemy.EnemyDef.Meat : System.Enum
+---@class snow.hit.CustomShapeType : System.Enum
+---@class snow.enemy.EnemyDef.ExtractiveType : System.Enum
+---@class snow.data.monsterList.PartType : System.Enum
+---@class snow.enemy.EnemyDef.MeatAttr : System.Enum
+---@class snow.CharacterBase.CharacterType : System.Enum
+---@class snow.hit.DamageType : System.Enum
+---@class snow.hit.HitUiType : System.Enum
+---@class snow.hit.SharpnessType : System.Enum
+---@class snow.hit.PlayerAttackAttr : System.Enum
+---@class snow.hit.PlayerHitMarkType : System.Enum
+---@class snow.hit.GimmickDamageType : System.Enum
+---@class snow.hit.HitStopLevel : System.Enum
+---@class snow.hit.HitStopType : System.Enum
+---@class snow.hit.DebuffType : System.Enum
+---@class snow.hit.AttackElement : System.Enum
+---@class snow.hit.ObjectBreakType : System.Enum
+---@class snow.hit.AttackAttr : System.Enum
+---@class snow.hit.HitAttr : System.Enum
+---@class snow.hit.HitPriority : System.Enum
+---@class snow.hit.AttackConditionMatchHitAttr : System.Enum

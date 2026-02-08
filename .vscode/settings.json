@@ -1,0 +1,23 @@
+{
+    "Lua.workspace.library": [
+        "typedef/reframework/dist/library/*",
+        "typedef/snow/*",
+        "deps/hb_draw/typedef/*"
+    ],
+    "Lua.workspace.ignoreSubmodules": false,
+    "Lua.diagnostics.groupFileStatus": {
+        "strict": "Any",
+        "strong": "Any",
+    },
+    "editor.rulers": [
+        120,
+    ],
+    "editor.formatOnSave": true,
+    "[lua]": {
+        "editor.defaultFormatter": "JohnnyMorganz.stylua"
+    },
+    "Lua.diagnostics.severity": {
+        "unused-local": "Warning",
+        "unused-function": "Hint"
+    },
+}

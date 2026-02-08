@@ -1,0 +1,107 @@
+local box = require("HitboxViewer.box.init")
+local char = require("HitboxViewer.character.init")
+local config = require("HitboxViewer.config.init")
+local data = require("HitboxViewer.data.init")
+local draw_queue = require("HitboxViewer.draw_queue")
+local frame_counter = require("HitboxViewer.util.misc.frame_counter")
+local queue = require("HitboxViewer.util.misc.queue")
+local util_game = require("HitboxViewer.util.game.init")
+
+local mod_map = data.mod.map
+
+local this = {}
+
+function this.characters()
+    local config_mod = config.current.mod
+    draw_queue:clear()
+
+    if
+        (
+            not config_mod.enabled_hurtboxes
+            and not config_mod.enabled_hitboxes
+            and not config_mod.enabled_pressboxes
+        ) or not char.get_master_player()
+    then
+        return
+    end
+
+    local tick = frame_counter.frame
+    local update_order = mod_map.update_order
+    local updated = 0
+    local force_updated = 0
+
+    for i = 1, #update_order do
+        local char_type = update_order[i]
+        local characters = char.cache.by_type_by_gameobject[char_type]
+
+        if not characters then
+            goto next_type
+        end
+
+        for _, character in pairs(characters) do
+            local out_of_range = character:is_out_of_range()
+            local do_update = tick - character.last_update_tick >= config.min_char_interval
+            local force_update = tick - character.last_update_tick >= config.max_char_interval
+
+            if
+                (do_update and updated < config.max_char_updates)
+                or force_update and force_updated < config.max_char_updates
+                or character.last_update_tick == 0
+            then
+                character.last_update_tick = tick
+                if character:is_dead() then
+                    char.cache.remove(character)
+                    goto continue
+                end
+
+                out_of_range = not character:update_distance(util_game.get_camera_origin())
+                if not force_update then
+                    updated = updated + 1
+                else
+                    force_updated = force_updated + 1
+                end
+            end
+
+            if character:is_disabled() or out_of_range then
+                goto continue
+            end
+
+            if config_mod.enabled_hitboxes then
+                draw_queue:extend(character:update_hitboxes())
+            end
+
+            if config_mod.enabled_hurtboxes then
+                draw_queue:extend(character:update_hurtboxes())
+            end
+
+            if config_mod.enabled_pressboxes then
+                draw_queue:extend(character:update_pressboxes())
+            end
+
+            ::continue::
+        end
+
+        ::next_type::
+    end
+end
+
+---@return boolean
+function this.is_quest()
+    local master_player = char.get_master_player()
+    if not master_player then
+        return false
+    end
+
+    return master_player:is_quest()
+end
+
+function this.queues()
+    char.get()
+    box.get()
+end
+
+function this.clear()
+    queue.clear_all()
+end
+
+return this
