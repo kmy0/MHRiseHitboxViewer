@@ -153,25 +153,26 @@ function this.init()
         return false
     end
 
-    e.new("via.physics.ShapeType")
-    e.new("snow.hit.HitWeight")
-    e.new("snow.player.ActStatus")
-    e.new("snow.hit.CustomShapeType")
-    e.new("snow.enemy.EnemyDef.ExtractiveType")
-    e.new("snow.enemy.EnemyDef.MeatAttr")
-    e.new("snow.hit.DamageType")
-    e.new("snow.hit.AttackConditionMatchHitAttr")
-    e.new("snow.CharacterBase.CharacterType")
+    if
+        not e.wrap_init(function()
+            e.new("via.physics.ShapeType")
+            e.new("snow.hit.HitWeight")
+            e.new("snow.player.ActStatus")
+            e.new("snow.hit.CustomShapeType")
+            e.new("snow.enemy.EnemyDef.ExtractiveType")
+            e.new("snow.enemy.EnemyDef.MeatAttr")
+            e.new("snow.hit.DamageType")
+            e.new("snow.hit.AttackConditionMatchHitAttr")
+            e.new("snow.CharacterBase.CharacterType")
 
-    local press_layers =
-        sdk.find_type_definition("snow.hit.HitManager.Layer"):get_field("PressLayers"):get_data() --[[@as System.Array<System.UInt32>]]
-    e.new("snow.hit.HitManager.Layer", function(_, value)
-        return press_layers:Contains(value)
-    end)
-
-    if util_table.any(e.enums, function(_, value)
-        return not value.ok
-    end) then
+            local press_layers = sdk.find_type_definition("snow.hit.HitManager.Layer")
+                :get_field("PressLayers")
+                :get_data() --[[@as System.Array<System.UInt32>]]
+            e.new("snow.hit.HitManager.Layer", function(_, value)
+                return press_layers:Contains(value)
+            end)
+        end)
+    then
         return false
     end
 
