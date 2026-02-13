@@ -63,6 +63,7 @@ this.enum.shape_dummy = { ---@class ShapeDummy.* : {[integer]: string}, {[string
     [4] = "Cylinder",
     [5] = "Triangle",
     [9] = "Donuts",
+    [8] = "SlicedCylinder",
 }
 ---@enum CharType
 this.enum.char = { ---@class CharType.* : {[string]: integer}, {[integer]: string}

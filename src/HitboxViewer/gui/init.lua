@@ -1,6 +1,7 @@
 local collisionbox = require("HitboxViewer.gui.collisionbox")
 local config = require("HitboxViewer.config.init")
 local draw_settings = require("HitboxViewer.gui.draw_settings")
+local dummybox = require("HitboxViewer.gui.dummybox")
 local gui_util = require("HitboxViewer.gui.util")
 local hitbox = require("HitboxViewer.gui.hitbox")
 local hurtbox = require("HitboxViewer.gui.hurtbox")
@@ -116,6 +117,7 @@ function this.draw()
     hurtbox.draw()
     pressbox.draw()
     collisionbox.draw()
+    dummybox.draw()
 
     if config.lang.font then
         imgui.pop_font()

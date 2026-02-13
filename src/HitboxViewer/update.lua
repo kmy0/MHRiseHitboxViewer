@@ -15,13 +15,16 @@ function this.characters()
     local config_mod = config.current.mod
     draw_queue:clear()
 
+    local master_player = char.get_master_player()
     if
         (
             not config_mod.enabled_hurtboxes
             and not config_mod.enabled_hitboxes
             and not config_mod.enabled_pressboxes
             and not config_mod.enabled_collisionboxes
-        ) or not char.get_master_player()
+            and master_player
+            and master_player:is_dummybox_disabled()
+        ) or not master_player
     then
         return
     end
@@ -82,6 +85,8 @@ function this.characters()
             if config_mod.enabled_collisionboxes then
                 draw_queue:extend(character:update_collisionboxes())
             end
+
+            draw_queue:extend(character:update_dummyboxes())
 
             ::continue::
         end

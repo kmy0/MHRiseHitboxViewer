@@ -11,6 +11,7 @@
 ---@field hitboxes table<via.physics.Collidable, HitBoxBase>
 ---@field pressboxes table<via.physics.Collidable, PressBoxBase>
 ---@field collisionboxes table<via.physics.Collidable | CollisionBox | ContactPoint, CollisionBox | ContactPoint>
+---@field dummyboxes table<ShapeType, DummyBox>
 ---@field hitbox_userdata_cache table<snow.hit.userdata.BaseHitAttackRSData, AttackLogEntry>
 ---@field collidable_to_indexes table<via.physics.UserData, {
 --- resource_idx: integer,
@@ -67,6 +68,7 @@ function this:new(type, base, name, game_object)
         hitboxes = {},
         pressboxes = {},
         collisionboxes = {},
+        dummyboxes = {},
         hitbox_userdata_cache = {},
         collidable_to_indexes = {},
         last_update_tick = 0,
@@ -108,6 +110,21 @@ function this:add_collisionbox(key, box)
     self.collisionboxes[key] = box
 end
 
+---@param box DummyBox
+function this:add_dummybox(box)
+    self.dummyboxes[box.shape_type] = box
+end
+
+function this:clear_dummyboxes()
+    self.dummyboxes = {}
+end
+
+---@param box_shape ShapeType
+---@return DummyBox?
+function this:get_dummy(box_shape)
+    return self.dummyboxes[box_shape]
+end
+
 ---@param key_a via.physics.Collidable | CollisionBox
 ---@param key_b via.physics.Collidable | CollisionBox
 function this:remove_contact_point(key_a, key_b)
@@ -116,7 +133,6 @@ function this:remove_contact_point(key_a, key_b)
         box:remove_contact_point()
     end
 end
-
 
 ---@param col via.physics.Collidable
 ---@return boolean
@@ -153,6 +169,7 @@ function this:is_disabled()
         and self:is_hitbox_disabled()
         and self:is_pressbox_disabled()
         and self:is_collisionbox_disabled()
+        and self:is_dummybox_disabled()
 end
 
 ---@return boolean
@@ -173,6 +190,10 @@ end
 ---@return boolean
 function this:is_collisionbox_disabled()
     return not config.current.mod.enabled_collisionboxes
+end
+
+function this:is_dummybox_disabled()
+    return true
 end
 
 ---@protected
@@ -232,6 +253,16 @@ function this:update_collisionboxes()
 
     ---@diagnostic disable-next-line: param-type-mismatch
     return self:_update_boxes(self.collisionboxes, collision_on_remove_callback)
+end
+
+---@return DummyBox[]?
+function this:update_dummyboxes()
+    if self:is_dummybox_disabled() then
+        return
+    end
+
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return self:_update_boxes(self.dummyboxes)
 end
 
 ---@param char snow.CharacterBase?

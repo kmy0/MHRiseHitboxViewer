@@ -24,6 +24,7 @@
 
 ---@class (exact) DummyboxSettings
 ---@field combo_shape integer
+---@field color integer
 
 ---@class (exact) CollisionboxSettings
 ---@field color_col_a integer
@@ -248,6 +249,7 @@ return function(default_color, default_highlight_color, default_collision_color)
             },
             dummyboxes = {
                 combo_shape = 1,
+                color = default_color,
             },
             draw = {
                 distance = 50,

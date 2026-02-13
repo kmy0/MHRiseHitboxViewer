@@ -12,7 +12,6 @@ function this.get()
     this.hurtbox.get()
     this.pressbox.get()
     this.hitbox.get()
-    this.dummy.get()
     this.collision.get()
 end
 

@@ -64,6 +64,13 @@ function this:is_quest()
     return util_ref.is_a(self.base, "snow.player.PlayerQuestBase")
 end
 
+function this:is_dummybox_disabled()
+    if self.type == mod_enum.char.MasterPlayer then
+        return util_table.empty(self.dummyboxes)
+    end
+    return char_cls.is_dummybox_disabled(self)
+end
+
 ---@return HurtBoxBase[]?
 function this:update_hurtboxes()
     if self:is_hurtbox_disabled() then
