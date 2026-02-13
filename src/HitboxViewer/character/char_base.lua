@@ -10,7 +10,13 @@
 ---@field hurtboxes table<via.physics.Collidable, HurtBoxBase>
 ---@field hitboxes table<via.physics.Collidable, HitBoxBase>
 ---@field pressboxes table<via.physics.Collidable, PressBoxBase>
+---@field collisionboxes table<via.physics.Collidable | CollisionBox | ContactPoint, CollisionBox | ContactPoint>
 ---@field hitbox_userdata_cache table<snow.hit.userdata.BaseHitAttackRSData, AttackLogEntry>
+---@field collidable_to_indexes table<via.physics.UserData, {
+--- resource_idx: integer,
+--- set_idx: integer,
+--- collidable_idx: integer,
+--- }>
 ---@field order integer
 ---@field last_update_tick integer
 
@@ -29,26 +35,40 @@ local this = {}
 ---@diagnostic disable-next-line: inject-field
 this.__index = this
 
+---@param key via.physics.Collidable | CollisionBox | ContactPoint
+---@param _ CollisionBox | ContactPoint
+local function collision_on_remove_callback(key, _)
+    if type(key) == "table" and key.type == mod_enum.box.CollisionBox then
+        ---@cast key CollisionBox
+        key:remove_contact_point()
+    end
+end
+
 ---@param type CharType
 ---@param base snow.CharacterBase
 ---@param name string
+---@param game_object via.GameObject?
 ---@return Character
-function this:new(type, base, name)
+function this:new(type, base, name, game_object)
+    game_object = not game_object and base:get_GameObject() or game_object --[[@as via.GameObject]]
+
     ---@type Character
     local o = {
         type = type,
         type_name = mod_enum.char[type],
         base = base,
-        game_object = base:get_GameObject(),
+        game_object = game_object,
         name = name,
-        id = base:get_address(),
+        id = game_object:get_address(),
         order = count,
         pos = Vector3f.new(0, 0, 0),
         distance = 0,
         hurtboxes = {},
         hitboxes = {},
         pressboxes = {},
+        collisionboxes = {},
         hitbox_userdata_cache = {},
+        collidable_to_indexes = {},
         last_update_tick = 0,
     }
     count = count + 1
@@ -82,10 +102,37 @@ function this:add_pressbox(box)
     self.pressboxes[box.collidable] = box
 end
 
+---@param key via.physics.Collidable | CollisionBox | ContactPoint
+---@param box CollisionBox | ContactPoint
+function this:add_collisionbox(key, box)
+    self.collisionboxes[key] = box
+end
+
+---@param key_a via.physics.Collidable | CollisionBox
+---@param key_b via.physics.Collidable | CollisionBox
+function this:remove_contact_point(key_a, key_b)
+    local box = self.collisionboxes[key_a] or self.collisionboxes[key_b] --[[@as CollisionBox?]]
+    if box then
+        box:remove_contact_point()
+    end
+end
+
+
 ---@param col via.physics.Collidable
 ---@return boolean
 function this:has_hitbox(col)
     return self.hitboxes[col] ~= nil
+end
+
+---@param col via.physics.Collidable
+---@return boolean
+function this:has_collisionbox(col)
+    return self.collisionboxes[col] ~= nil
+end
+
+---@return boolean
+function this:any_collisionbox()
+    return not util_table.empty(self.collisionboxes)
 end
 
 ---@param pos Vector3f
@@ -102,7 +149,10 @@ end
 
 ---@return boolean
 function this:is_disabled()
-    return self:is_hurtbox_disabled() and self:is_hitbox_disabled() and self:is_pressbox_disabled()
+    return self:is_hurtbox_disabled()
+        and self:is_hitbox_disabled()
+        and self:is_pressbox_disabled()
+        and self:is_collisionbox_disabled()
 end
 
 ---@return boolean
@@ -120,10 +170,16 @@ function this:is_pressbox_disabled()
     return config.current.mod.pressboxes.disable[self.type_name]
 end
 
+---@return boolean
+function this:is_collisionbox_disabled()
+    return not config.current.mod.enabled_collisionboxes
+end
+
 ---@protected
 ---@param boxes table<via.physics.Collidable, CollidableBase>
+---@param on_remove_callback fun(key: any, box: BoxBase)?
 ---@return HurtBoxBase[]?
-function this:_update_boxes(boxes)
+function this:_update_boxes(boxes, on_remove_callback)
     local ret = {}
     for col, box in pairs(boxes) do
         local box_state = box:update()
@@ -131,6 +187,9 @@ function this:_update_boxes(boxes)
             table.insert(ret, box)
         elseif box_state == mod_enum.box_state.Dead then
             boxes[col] = nil
+            if on_remove_callback then
+                on_remove_callback(col, box)
+            end
         end
     end
 
@@ -163,6 +222,16 @@ function this:update_pressboxes()
     end
 
     return self:_update_boxes(self.pressboxes)
+end
+
+---@return CollisionBox | ContactPoint[]?
+function this:update_collisionboxes()
+    if self:is_collisionbox_disabled() then
+        return
+    end
+
+    ---@diagnostic disable-next-line: param-type-mismatch
+    return self:_update_boxes(self.collisionboxes, collision_on_remove_callback)
 end
 
 ---@param char snow.CharacterBase?

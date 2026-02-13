@@ -1,3 +1,4 @@
+local collisionbox = require("HitboxViewer.gui.collisionbox")
 local config = require("HitboxViewer.config.init")
 local draw_settings = require("HitboxViewer.gui.draw_settings")
 local gui_util = require("HitboxViewer.gui.util")
@@ -20,6 +21,8 @@ local function draw_menu_bar()
         set:menu_item(gui_util.tr("menu.config.draw_hitboxes"), "mod.enabled_hitboxes")
         set:menu_item(gui_util.tr("menu.config.draw_hurtboxes"), "mod.enabled_hurtboxes")
         set:menu_item(gui_util.tr("menu.config.draw_pressboxes"), "mod.enabled_pressboxes")
+        set:menu_item(gui_util.tr("menu.config.draw_collisionboxes"), "mod.enabled_collisionboxes")
+        util_imgui.tooltip(config.lang:tr("mod.tooltip_box_collision"))
 
         imgui.end_menu()
     end
@@ -60,6 +63,10 @@ local function draw_menu_bar()
 
         if util_imgui.menu_item(gui_util.tr("mod.button_hurtbox_info"), nil, nil, true) then
             config_gui.hurtbox_info.is_opened = true
+        end
+
+        if util_imgui.menu_item(gui_util.tr("mod.button_collision_log"), nil, nil, true) then
+            config_gui.collision_log.is_opened = true
         end
 
         imgui.end_menu()
@@ -108,6 +115,7 @@ function this.draw()
     hitbox.draw()
     hurtbox.draw()
     pressbox.draw()
+    collisionbox.draw()
 
     if config.lang.font then
         imgui.pop_font()

@@ -20,6 +20,7 @@ function this.characters()
             not config_mod.enabled_hurtboxes
             and not config_mod.enabled_hitboxes
             and not config_mod.enabled_pressboxes
+            and not config_mod.enabled_collisionboxes
         ) or not char.get_master_player()
     then
         return
@@ -78,21 +79,15 @@ function this.characters()
                 draw_queue:extend(character:update_pressboxes())
             end
 
+            if config_mod.enabled_collisionboxes then
+                draw_queue:extend(character:update_collisionboxes())
+            end
+
             ::continue::
         end
 
         ::next_type::
     end
-end
-
----@return boolean
-function this.is_quest()
-    local master_player = char.get_master_player()
-    if not master_player then
-        return false
-    end
-
-    return master_player:is_quest()
 end
 
 function this.queues()

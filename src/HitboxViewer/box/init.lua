@@ -4,6 +4,7 @@ local this = {
     pressbox = require("HitboxViewer.box.press.init"),
     dummy = require("HitboxViewer.box.dummy"),
     queue = require("HitboxViewer.box.load_queue"),
+    collision = require("HitboxViewer.box.collision.init"),
 }
 
 function this.get()
@@ -12,6 +13,7 @@ function this.get()
     this.pressbox.get()
     this.hitbox.get()
     this.dummy.get()
+    this.collision.get()
 end
 
 return this

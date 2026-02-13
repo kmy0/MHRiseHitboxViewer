@@ -21,11 +21,10 @@
 ---@field attack_id string
 ---@field more_data table<string, any>
 
----@class (exact) AttackLogEntry : AttackLogEntryData, AttackLogEntryBase
-
 ---@class (exact) Timestamp
 ---@field os_clock number
 
+---@class (exact) AttackLogEntry : AttackLogEntryData, AttackLogEntryBase
 ---@class (exact) AttackLogEntryWithTimestamp : AttackLogEntry, Timestamp
 
 ---@class AttackLog
@@ -33,8 +32,6 @@
 ---@field this_tick table<string, boolean>
 ---@field open_entries table<integer, boolean>
 ---@field last_tick integer
----@field entries_start integer
----@field row_count integer
 
 local circular_buffer = require("HitboxViewer.util.misc.circular_buffer")
 local config = require("HitboxViewer.config.init")
@@ -52,7 +49,6 @@ local this = {
     this_tick = {},
     open_entries = {},
     last_tick = -1,
-    entries_start = 1,
 }
 
 ---@param t table<string, any>

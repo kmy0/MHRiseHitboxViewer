@@ -72,9 +72,18 @@
 ---@field get_UserData fun(self: via.physics.Collidable): via.physics.UserData
 ---@field get_Enabled fun(self: via.physics.Collidable): System.Boolean
 ---@field get_FilterInfo fun(self: via.physics.Collidable): via.physics.FilterInfo
+---@field get_GameObject fun(self: via.physics.Collidable): via.GameObject
 
 ---@class via.physics.FilterInfo : via.clr.ManagedObject
 ---@field get_Layer fun(self: via.physics.FilterInfo): System.UInt32
 
 ---@class via.clr.ManagedObject : via.Object
 ---@field ToString fun(self: via.clr.ManagedObject): System.String
+
+---@class via.physics.CollisionInfo
+---@field CollidableA via.physics.Collidable
+---@field CollidableB via.physics.Collidable
+---@field ContactPoint via.physics.ContactPoint
+
+---@class via.physics.ContactPoint
+---@field Position Vector3f

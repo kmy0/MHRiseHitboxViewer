@@ -10,6 +10,7 @@ local bigenemy = require("HitboxViewer.character.big_enemy")
 local char_cls = require("HitboxViewer.character.char_base")
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
+local dummy = require("HitboxViewer.character.dummy")
 local player = require("HitboxViewer.character.player")
 local s = require("HitboxViewer.util.ref.singletons")
 
@@ -102,6 +103,12 @@ function this.get_character(base_char_type, char_base)
         ---@cast char_base snow.enemy.EmBossCharacterBase | snow.enemy.EnemyCharacterBase
         return get_enemy_data(base_char_type, char_base)
     end
+end
+
+---@param game_object via.GameObject
+---@return DummyChar?
+function this.get_dummy_character(game_object)
+    return dummy:new(game_object, game_object:get_Name())
 end
 
 return this

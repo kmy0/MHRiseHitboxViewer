@@ -153,6 +153,11 @@ function this.init()
         return false
     end
 
+    local monster_list = s.get("snow.gui.GuiManager"):get_refMonsterList()
+    if not monster_list or not monster_list._MonsterBossData then
+        return false
+    end
+
     if
         not e.wrap_init(function()
             e.new("via.physics.ShapeType")
