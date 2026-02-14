@@ -54,6 +54,15 @@ function this:update_guard()
         self:update_direction()
     end
 end
+---@return boolean
+function this:check_iframe()
+    local ret = false
+    util_misc.try(function()
+        local base = self.base
+        ret = base:checkMuteki()
+    end)
+    return ret
+end
 
 function this:get_guard_direction()
     return self.direction

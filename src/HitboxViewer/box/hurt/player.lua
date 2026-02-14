@@ -1,10 +1,10 @@
 ---@class (exact) PlayerHurtBox : HurtBoxBase
 ---@field guard_box GuardBox
+---@field parent Player
 
 local data = require("HitboxViewer.data.init")
 local guard_box = require("HitboxViewer.box.hurt.guard")
 local hurtbox_base = require("HitboxViewer.box.hurt.hurtbox_base")
-local util_misc = require("HitboxViewer.util.misc.init")
 
 local mod_enum = data.mod.enum
 
@@ -33,21 +33,12 @@ function this:new(collidable, parent, resource_idx, set_idx, collidable_idx)
     return o
 end
 
----@return boolean
-function this:check_iframe()
-    local ret = false
-    util_misc.try(function()
-        local base = self.parent.base --[[@as snow.player.PlayerQuestBase]]
-        ret = base:checkMuteki()
-    end)
-    return ret
-end
-
 ---@return BoxState, HurtBoxBase[]?
 function this:update()
     ---@type HurtBoxBase[]?
     local ret
-    local box_state = self:check_iframe() and mod_enum.box_state.None or hurtbox_base.update(self)
+    local box_state = self.parent:check_iframe() and mod_enum.box_state.None
+        or hurtbox_base.update(self)
 
     if box_state == mod_enum.box_state.Draw then
         ret = {}
