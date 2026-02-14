@@ -169,6 +169,7 @@ function this.init()
             e.new("snow.hit.DamageType")
             e.new("snow.hit.AttackConditionMatchHitAttr")
             e.new("snow.CharacterBase.CharacterType")
+            e.new("snow.player.DamageReflexInfo.Type")
 
             local press_layers = sdk.find_type_definition("snow.hit.HitManager.Layer")
                 :get_field("PressLayers")
@@ -227,6 +228,11 @@ function this.init()
         util_table.values(e.get("snow.hit.AttackConditionMatchHitAttr").enum_to_field),
         config_mod.hitboxes.hit_condition,
         config.default_color
+    )
+    write_strings_to_config(
+        util_table.values(e.get("snow.player.DamageReflexInfo.Type").enum_to_field),
+        config_mod.hurtboxes.damage_reflex,
+        config.default_highlight_color
     )
 
     config.current.mod = util_table.merge_t(config_mod, config.current.mod)

@@ -85,6 +85,7 @@
 ---@field checkMuteki fun(self: snow.player.PlayerQuestBase): System.Boolean
 ---@field checkSuperArmor fun(self: snow.player.PlayerQuestBase): System.Boolean
 ---@field checkHyperArmor fun(self: snow.player.PlayerQuestBase): System.Boolean
+---@field get_DamageReflex fun(self: snow.player.PlayerQuestBase): snow.player.DamageReflexInfo
 
 ---@class snow.CharacterBase : snow.BehaviorRoot
 ---@field getDirection fun(self: snow.CharacterBase): Vector3f
@@ -173,3 +174,7 @@
 
 ---@class snow.hit.userdata.EmHitAttackShapeData : snow.hit.userdata.BaseHitAttackShapeData
 ---@field _ConditionMatchHitAttr snow.hit.AttackConditionMatchHitAttr
+
+---@class snow.player.DamageReflexInfo : via.clr.ManagedObject
+---@field get_CheckType fun(self: snow.player.DamageReflexInfo): snow.player.DamageReflexInfo.Type
+---@field _IsChecking System.Boolean

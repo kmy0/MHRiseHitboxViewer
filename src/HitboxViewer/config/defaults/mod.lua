@@ -11,6 +11,7 @@
 ---@field conditions table<string, table<string, any>>
 ---@field default_state integer DefaultHurtboxState
 ---@field guard_type BoxSettings
+---@field damage_reflex BoxSettings
 
 ---@class (exact) HitboxSettings : BoxSettings
 ---@field damage_type BoxSettings
@@ -169,6 +170,13 @@ return function(default_color, default_highlight_color, default_collision_color)
                     Npc = false,
                 },
                 guard_type = {
+                    disable = {},
+                    color = {
+                        one_color = default_highlight_color,
+                    },
+                    color_enable = {},
+                },
+                damage_reflex = {
                     disable = {},
                     color = {
                         one_color = default_highlight_color,

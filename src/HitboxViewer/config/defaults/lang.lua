@@ -52,6 +52,7 @@ return {
         box_disable_npc = "Disable Npc",
         header_hurtboxes = "Hurtboxes",
         tree_guard = "Guard",
+        tree_damage_reflex = "Damage Reflex",
         tree_conditions = "Conditions",
         tooltip_big_only = "Big Monsters Only",
         tooltip_player_only = "Player Only",
@@ -77,6 +78,7 @@ return {
         button_click = "Click",
         color_guard = "Guard Color",
         color_dummy = "Dummy Color",
+        color_damage_reflex = "Damage Reflex Color",
         tree_hit_condition = "Hit Condition",
         table_attack_log = {
             header_row = "Row",

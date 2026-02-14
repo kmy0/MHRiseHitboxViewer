@@ -105,7 +105,7 @@ function this.get_char(game_object, char_base, dummy_ok)
         ---@cast char_base snow.enemy.EnemyCharacterBase
         base_char_type = char_base:get_isBossEnemy() and mod_enum.base_char.BigMonster
             or mod_enum.base_char.SmallMonster
-    elseif util_ref.is_a(char_base, "snow.player.PlayerBase") then
+    elseif util_ref.is_a(char_base, "snow.player.PlayerQuestBase") then
         base_char_type = mod_enum.base_char.Hunter
     elseif util_ref.is_a(char_base, "snow.otomo.OtomoBase") then
         base_char_type = mod_enum.base_char.Pet

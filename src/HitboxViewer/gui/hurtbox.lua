@@ -2,6 +2,7 @@ local conditions = require("HitboxViewer.box.hurt.conditions.init")
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
 local drag_util = require("HitboxViewer.gui.drag")
+local e = require("HitboxViewer.util.game.enum")
 local generic = require("HitboxViewer.gui.generic")
 local gui_util = require("HitboxViewer.gui.util")
 local set = require("HitboxViewer.util.imgui.config_set"):new(config)
@@ -154,6 +155,26 @@ local function options()
             "mod.hurtboxes.guard_type",
             function(t, i, _)
                 return util_table.contains(mod_enum.guard_type, t[i])
+            end
+        )
+
+        imgui.tree_pop()
+    end
+
+    if imgui.tree_node(gui_util.tr("mod.tree_damage_reflex")) then
+        util_imgui.tooltip_text(config.lang:tr("mod.tooltip_player_only"))
+        set:color_edit(
+            gui_util.tr("mod.color_damage_reflex"),
+            "mod.hurtboxes.damage_reflex.color.one_color"
+        )
+
+        imgui.separator()
+
+        generic.draw_box_type_options(
+            util_table.keys(config_mod.hurtboxes.damage_reflex.disable),
+            "mod.hurtboxes.damage_reflex",
+            function(t, i, _)
+                return e.get("snow.player.DamageReflexInfo.Type")[t[i]] ~= nil
             end
         )
 

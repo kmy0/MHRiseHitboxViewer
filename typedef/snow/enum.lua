@@ -31,3 +31,4 @@
 ---@class snow.hit.HitAttr : System.Enum
 ---@class snow.hit.HitPriority : System.Enum
 ---@class snow.hit.AttackConditionMatchHitAttr : System.Enum
+---@class snow.player.DamageReflexInfo.Type : System.Enum

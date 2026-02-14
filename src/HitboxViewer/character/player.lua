@@ -3,6 +3,8 @@
 ---@field guard_type GuardType?
 ---@field direction Vector3f
 ---@field hurtboxes table<via.physics.Collidable, PlayerHurtBox>
+---@field damage_reflex snow.player.DamageReflexInfo
+---@field damage_reflex_type snow.player.DamageReflexInfo.Type
 
 local char_cls = require("HitboxViewer.character.char_base")
 local data = require("HitboxViewer.data.init")
@@ -28,6 +30,8 @@ function this:new(type, base, name)
     ---@cast o Player
     setmetatable(o, self)
 
+    o.damage_reflex = o.base:get_DamageReflex()
+    o.damage_reflex_type = -1
     return o
 end
 
@@ -54,6 +58,15 @@ function this:update_guard()
         self:update_direction()
     end
 end
+
+function this:update_damage_reflex()
+    if self.damage_reflex._IsChecking then
+        self.damage_reflex_type = self.damage_reflex:get_CheckType()
+    else
+        self.damage_reflex_type = -1
+    end
+end
+
 ---@return boolean
 function this:check_iframe()
     local ret = false
@@ -87,6 +100,7 @@ function this:update_hurtboxes()
     end
 
     self:update_guard()
+    self:update_damage_reflex()
 
     local ret = {}
     for col, box in pairs(self.hurtboxes) do
