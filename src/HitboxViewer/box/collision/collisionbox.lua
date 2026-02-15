@@ -38,7 +38,7 @@ function this:new(collidable, color, draw_duration, contact_point)
     o.updated = false
     o.contact_point = contact_point
     o.disabled_ok = true
-
+    o:update()
     return o
 end
 
