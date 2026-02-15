@@ -40,7 +40,7 @@ local function set_collidable_data(char)
 
                 char.collidable_to_indexes[col:get_UserData()] = {
                     resource_idx = i,
-                    set_idx = k,
+                    set_idx = j,
                     collidable_idx = k,
                 }
                 ::continue::
