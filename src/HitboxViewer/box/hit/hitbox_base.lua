@@ -7,6 +7,7 @@ local colldable_base = require("HitboxViewer.box.collidable_base")
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
 local frame_counter = require("HitboxViewer.util.misc.frame_counter")
+local util_imgui = require("HitboxViewer.util.imgui.init")
 
 local mod_enum = data.mod.enum
 
@@ -44,6 +45,27 @@ function this:new(collidable, parent, resource_idx, set_idx, collidable_idx, log
     o.is_shown = false
     o.tick = frame_counter.frame
     return o
+end
+
+---@return boolean
+function this:is_trail_disabled()
+    local config_hitboxes = config.current.mod.hitboxes
+
+    local order = {
+        config_hitboxes.misc_type.trail_enable[self.log_entry.misc_type],
+        config_hitboxes.damage_type.trail_enable[self.log_entry.damage_type],
+        config_hitboxes.hit_condition.trail_enable[self.log_entry.hit_condition],
+        config_hitboxes.trail_enable[mod_enum.char[self.parent.type]],
+    }
+
+    for i = 1, #order do
+        local tri = util_imgui.get_checkbox_tri_value(order[i])
+        if tri ~= nil then
+            return not tri
+        end
+    end
+
+    return true
 end
 
 ---@return BoxState

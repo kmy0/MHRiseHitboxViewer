@@ -148,7 +148,6 @@ this.enum.condition_state = { ---@class ConditionState.* : {[string]: integer}, 
     Highlight = 1,
     Hide = 2,
 }
-
 ---@enum HitBoxLoadDataType
 -- stylua: ignore
 this.enum.hitbox_load_data = { ---@class HitBoxLoadDataType.* : {[string]: integer}, {[integer]: string}
@@ -156,6 +155,13 @@ this.enum.hitbox_load_data = { ---@class HitBoxLoadDataType.* : {[string]: integ
     rsc = 2,
     shell = 3,
 }
+---@enum GuardType
+this.enum.guard_type = { ---@class GuardType.* : {[string]: string}
+    GUARD = "GUARD",
+    HYPER = "HYPER",
+    SUPER = "SUPER",
+}
+
 this.map.update_order = {
     this.enum.char.MasterPlayer,
     this.enum.char.BigMonster,
@@ -164,12 +170,6 @@ this.map.update_order = {
     this.enum.char.Npc,
     this.enum.char.SmallMonster,
     this.enum.char.Dummy,
-}
----@enum GuardType
-this.enum.guard_type = { ---@class GuardType.* : {[string]: string}
-    GUARD = "GUARD",
-    HYPER = "HYPER",
-    SUPER = "SUPER",
 }
 
 ---@return boolean

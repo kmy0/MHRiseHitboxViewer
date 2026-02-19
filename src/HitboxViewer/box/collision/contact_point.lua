@@ -31,6 +31,10 @@ function this:new(pos, radius, color, draw_duration)
     return o
 end
 
+function this:is_trail_disabled()
+    return true
+end
+
 function this:remove()
     self.draw_timer:abort()
 end

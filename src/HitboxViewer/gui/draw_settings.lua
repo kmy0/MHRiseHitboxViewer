@@ -1,6 +1,7 @@
 local config = require("HitboxViewer.config.init")
 local gui_util = require("HitboxViewer.gui.util")
 local set = require("HitboxViewer.util.imgui.config_set"):new(config)
+local util_imgui = require("HitboxViewer.util.imgui.init")
 
 local this = {}
 
@@ -23,6 +24,37 @@ function this.draw()
     set:color_edit(
         gui_util.tr("menu.draw_settings.color_highlight"),
         "mod.hurtboxes.color.highlight"
+    )
+
+    util_imgui.separator_text(config.lang:tr("menu.draw_settings.category_trail"))
+    set:checkbox(gui_util.tr("menu.draw_settings.box_fade"), "mod.trailboxes.fade")
+    util_imgui.tooltip(config.lang:tr("menu.draw_settings.tooltip_box_fade"), true)
+    set:checkbox(gui_util.tr("menu.draw_settings.box_outline", "trail"), "mod.trailboxes.outline")
+
+    set:slider_int(
+        "##menu.draw_settings.slider_step",
+        "mod.trailboxes.step",
+        1,
+        config.max_trail_dur,
+        string.format(
+            "%s %s %s",
+            config.lang:tr("menu.draw_settings.slider_step"),
+            config.current.mod.trailboxes.step,
+            config.current.mod.trailboxes.step == 1 and config.lang:tr("misc.text_frame")
+                or config.lang:tr("misc.text_frame_plural")
+        )
+    )
+    set:slider_int(
+        gui_util.tr("menu.draw_settings.slider_draw_dur", "trailboxes"),
+        "mod.trailboxes.draw_dur",
+        1,
+        config.max_trail_dur,
+        string.format(
+            "%s %s",
+            config.current.mod.trailboxes.draw_dur,
+            config.current.mod.trailboxes.draw_dur == 1 and config.lang:tr("misc.text_frame")
+                or config.lang:tr("misc.text_frame_plural")
+        )
     )
 
     imgui.pop_item_width()

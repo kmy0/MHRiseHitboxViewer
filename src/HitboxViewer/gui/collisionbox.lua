@@ -8,33 +8,59 @@ local this = {}
 function this.draw()
     if imgui.collapsing_header(gui_util.tr("mod.header_collisionboxes")) then
         local config_col = config.current.mod.collisionboxes
+        imgui.push_item_width(gui_util.get_item_width())
 
-        set:checkbox(gui_util.tr("mod.box_disable_damage"), "mod.collisionboxes.disable_damage")
-        imgui.begin_disabled(config_col.disable_damage)
-        imgui.same_line()
-        set:checkbox(
-            gui_util.tr("mod.box_disable_damage_enemy"),
-            "mod.collisionboxes.disable_damage_enemy"
-        )
-        imgui.same_line()
-        set:checkbox(
-            gui_util.tr("mod.box_disable_damage_player"),
-            "mod.collisionboxes.disable_damage_player"
-        )
-        imgui.end_disabled()
-        set:checkbox(gui_util.tr("mod.box_disable_press"), "mod.collisionboxes.disable_press")
-        imgui.begin_disabled(config_col.disable_press)
-        imgui.same_line()
-        set:checkbox(
-            gui_util.tr("mod.box_disable_press_enemy"),
-            "mod.collisionboxes.disable_press_enemy"
-        )
-        imgui.same_line()
-        set:checkbox(
-            gui_util.tr("mod.box_disable_press_player"),
-            "mod.collisionboxes.disable_press_player"
-        )
-        imgui.end_disabled()
+        local col_count = 3
+        if imgui.begin_table("collisionboxes", col_count, imgui.TableFlags.SizingFixedFit) then
+            for i = 1, col_count do
+                imgui.table_setup_column("collisionboxes" .. i)
+            end
+
+            imgui.push_style_var(17, Vector2f.new(0, 0))
+            imgui.table_next_row()
+            imgui.table_set_column_index(0)
+            set:checkbox(gui_util.tr("mod.box_disable_damage"), "mod.collisionboxes.disable_damage")
+            imgui.begin_disabled(config_col.disable_damage)
+
+            imgui.table_set_column_index(1)
+            set:checkbox(
+                gui_util.tr("mod.box_disable_damage_enemy"),
+                "mod.collisionboxes.disable_damage_enemy"
+            )
+
+            imgui.table_set_column_index(2)
+            set:checkbox(
+                gui_util.tr("mod.box_disable_damage_player"),
+                "mod.collisionboxes.disable_damage_player"
+            )
+            imgui.end_disabled()
+
+            imgui.push_style_var(17, Vector2f.new(0, 2))
+            imgui.table_next_row()
+            imgui.pop_style_var(1)
+
+            imgui.table_next_row()
+            imgui.table_set_column_index(0)
+            set:checkbox(gui_util.tr("mod.box_disable_press"), "mod.collisionboxes.disable_press")
+            imgui.begin_disabled(config_col.disable_press)
+
+            imgui.table_set_column_index(1)
+            set:checkbox(
+                gui_util.tr("mod.box_disable_press_enemy"),
+                "mod.collisionboxes.disable_press_enemy"
+            )
+
+            imgui.table_set_column_index(2)
+            set:checkbox(
+                gui_util.tr("mod.box_disable_press_player"),
+                "mod.collisionboxes.disable_press_player"
+            )
+            imgui.end_disabled()
+
+            imgui.pop_style_var(1)
+            imgui.end_table()
+        end
+
         set:checkbox(gui_util.tr("mod.box_disable_sensor"), "mod.collisionboxes.disable_sensor")
         set:checkbox(
             gui_util.tr("mod.box_disable_undefined"),
@@ -74,6 +100,8 @@ function this.draw()
                     or config.lang:tr("misc.text_frame_plural")
             )
         )
+
+        imgui.pop_item_width()
     end
 end
 

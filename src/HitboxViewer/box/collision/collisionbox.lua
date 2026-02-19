@@ -43,6 +43,11 @@ function this:new(collidable, color, draw_duration, contact_point)
     return o
 end
 
+---@return boolean
+function this:is_trail_disabled()
+    return true
+end
+
 function this:remove_contact_point()
     if self.contact_point then
         self.contact_point:remove()

@@ -6,9 +6,10 @@
 ---@field disable table<string, boolean>
 ---@field color table<string, integer>
 ---@field color_enable table<string, boolean>
+---@field trail_enable table<string, CheckboxTri>
 
 ---@class (exact) HurtboxSettings : BoxSettings
----@field conditions table<string, table<string, any>>
+---@field conditions table<string, any>[]
 ---@field default_state integer DefaultHurtboxState
 ---@field guard_type BoxSettings
 ---@field damage_reflex BoxSettings
@@ -26,6 +27,12 @@
 ---@class (exact) DummyboxSettings
 ---@field combo_shape integer
 ---@field color integer
+
+---@class (exact) TrailboxSettings
+---@field draw_dur integer
+---@field step integer
+---@field fade boolean
+---@field outline boolean
 
 ---@class (exact) CollisionboxSettings
 ---@field color_col_a integer
@@ -66,6 +73,7 @@
 ---@field pressboxes PressboxSettings
 ---@field dummyboxes DummyboxSettings
 ---@field collisionboxes CollisionboxSettings
+---@field trailboxes TrailboxSettings
 ---@field draw DrawSettings
 
 local version = require("HitboxViewer.config.version")
@@ -116,11 +124,21 @@ return function(default_color, default_highlight_color, default_collision_color)
                     disable = {},
                     color = {},
                     color_enable = {},
+                    trail_enable = {},
                 },
                 layer = {
                     disable = {},
                     color = {},
                     color_enable = {},
+                    trail_enable = {},
+                },
+                trail_enable = {
+                    SmallMonster = false,
+                    BigMonster = false,
+                    Pet = false,
+                    Player = false,
+                    MasterPlayer = false,
+                    Npc = false,
                 },
             },
             collisionboxes = {
@@ -175,6 +193,7 @@ return function(default_color, default_highlight_color, default_collision_color)
                         one_color = default_highlight_color,
                     },
                     color_enable = {},
+                    trail_enable = {},
                 },
                 damage_reflex = {
                     disable = {},
@@ -182,9 +201,18 @@ return function(default_color, default_highlight_color, default_collision_color)
                         one_color = default_highlight_color,
                     },
                     color_enable = {},
+                    trail_enable = {},
                 },
                 conditions = {},
                 default_state = 1,
+                trail_enable = {
+                    SmallMonster = false,
+                    BigMonster = false,
+                    Pet = false,
+                    Player = false,
+                    MasterPlayer = false,
+                    Npc = false,
+                },
             },
             hitboxes = {
                 disable = {
@@ -216,6 +244,7 @@ return function(default_color, default_highlight_color, default_collision_color)
                     disable = {},
                     color = {},
                     color_enable = {},
+                    trail_enable = {},
                 },
                 hit_condition = {
                     disable = {},
@@ -239,6 +268,7 @@ return function(default_color, default_highlight_color, default_collision_color)
                         NoHitInAirForPlayer = true,
                         HitFloatingPlayer = true,
                     },
+                    trail_enable = {},
                 },
                 misc_type = {
                     disable = {},
@@ -252,12 +282,27 @@ return function(default_color, default_highlight_color, default_collision_color)
                         Windbox = true,
                         Unguardable = true,
                     },
+                    trail_enable = {},
                 },
                 pause_attack_log = false,
+                trail_enable = {
+                    SmallMonster = false,
+                    BigMonster = false,
+                    Pet = false,
+                    Player = false,
+                    MasterPlayer = false,
+                    Npc = false,
+                },
             },
             dummyboxes = {
                 combo_shape = 1,
                 color = default_color,
+            },
+            trailboxes = {
+                draw_dur = 60,
+                step = 2,
+                fade = true,
+                outline = true,
             },
             draw = {
                 distance = 50,

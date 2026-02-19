@@ -5,6 +5,7 @@
 ---@field part_data PartData
 ---@field condition ConditionResult
 ---@field condition_color integer
+---@field condition_trail CheckboxTri
 ---@field hurtboxes BigEnemyHurtBox[]
 ---@field key string
 ---@field last_updated integer
@@ -95,6 +96,7 @@ function this:new(cache, enemy_base, part_group, meat, enemy_hurtbox)
             hurtboxes = {},
             condition = mod_enum.condition_result.None,
             condition_color = 0,
+            condition_trail = 0,
             part_data = get_part_data(enemy_base, part_group, meat, enemy_hurtbox),
             name = data.get_em_part_name(enemy_base:get_EnemyType(), meat),
             key = key,
@@ -181,7 +183,7 @@ function this:update(conds)
         end
     end
 
-    self.condition, self.condition_color = conditions.check_part_group(self)
+    self.condition, self.condition_color, self.condition_trail = conditions.check_part_group(self)
     self.last_updated = frame_counter.frame
 end
 

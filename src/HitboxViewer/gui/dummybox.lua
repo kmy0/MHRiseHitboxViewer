@@ -86,6 +86,9 @@ function this.draw()
     if imgui.collapsing_header(gui_util.tr("mod.header_dummyboxes")) then
         local master_player = char.get_master_player()
         local config_mod = config.current.mod
+
+        imgui.push_item_width(gui_util.get_item_width())
+
         set:combo("##dummy_shape_spawner", "mod.dummyboxes.combo_shape", state.combo.shape.values)
         local shape = state.combo.shape:get_key(config_mod.dummyboxes.combo_shape)
         imgui.same_line()
@@ -177,6 +180,7 @@ function this.draw()
         elseif shape == mod_enum.shape.Triangle then
         end
 
+        imgui.pop_item_width()
         imgui.end_disabled()
     end
 end

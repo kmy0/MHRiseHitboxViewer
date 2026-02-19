@@ -7,6 +7,7 @@ local data = require("HitboxViewer.data.init")
 local e = require("HitboxViewer.util.game.enum")
 local guard_box = require("HitboxViewer.box.hurt.guard")
 local hurtbox_base = require("HitboxViewer.box.hurt.hurtbox_base")
+local util_imgui = require("HitboxViewer.util.imgui.init")
 
 local mod_enum = data.mod.enum
 
@@ -33,6 +34,19 @@ function this:new(collidable, parent, resource_idx, set_idx, collidable_idx)
     setmetatable(o, self)
     o.guard_box = guard_box:new(parent, o)
     return o
+end
+
+---@return boolean
+function this:is_trail_disabled()
+    local config_reflex = config.current.mod.hurtboxes.damage_reflex.trail_enable
+    local enum_name = e.get("snow.player.DamageReflexInfo.Type")[self.parent.damage_reflex_type]
+    local tri = util_imgui.get_checkbox_tri_value(config_reflex[enum_name])
+
+    if tri ~= nil then
+        return not tri
+    end
+
+    return hurtbox_base.is_trail_disabled(self)
 end
 
 ---@return BoxState
@@ -67,6 +81,12 @@ function this:update()
     if box_state == mod_enum.box_state.Draw then
         ret = {}
         table.insert(ret, self)
+    end
+
+    local trail = self.guard_box:update_trail()
+    if trail then
+        ret = {}
+        table.move(trail, 1, #trail, #ret + 1, ret)
     end
 
     if box_state == mod_enum.box_state.Draw then

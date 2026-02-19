@@ -90,16 +90,16 @@ function this.save()
 end
 
 ---@param part_group PartGroup
----@return ConditionResult, integer
+---@return ConditionResult, integer, CheckboxTri
 function this.check_part_group(part_group)
     for i = 1, #this.sorted do
         local cond = this.sorted[i]
         local state, color = cond:check(part_group)
         if state ~= mod_enum.condition_result.None then
-            return state, color
+            return state, color, cond.trail
         end
     end
-    return mod_enum.condition_result.None, 0
+    return mod_enum.condition_result.None, 0, 0
 end
 
 ---@param old_cond ConditionBase
