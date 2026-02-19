@@ -101,6 +101,7 @@ function this:new(cache, enemy_base, part_group, meat, enemy_hurtbox)
             name = data.get_em_part_name(enemy_base:get_EnemyType(), meat),
             key = key,
             last_updated = 0,
+            is_enabled = true,
         }
         setmetatable(o, self)
     else
@@ -123,30 +124,34 @@ function this:_update_hitzones()
     end
 end
 
----@param conds table<ConditionType, ConditionBase[]>?>
-function this:update(conds)
-    local enabled = false
+---@param update_all boolean
+---@param conds table<ConditionType, ConditionBase[]>
+function this:update(update_all, conds)
+    --FIXME: checkEnabledRequestSet sometimes returns false even if parts are enabled ?
+    -- local enabled = false
 
-    util_misc.try(function()
-        enabled = self.part_data._rsc:checkEnabledRequestSet(
-            self.part_data._resource_idx,
-            self.part_data._rs_id
-        )
-    end)
+    -- util_misc.try(function()
+    --     enabled = self.part_data._rsc:checkEnabledRequestSet(
+    --         self.part_data._resource_idx,
+    --         self.part_data._rs_id
+    --     )
+    -- end)
 
-    local changed = self.part_data.is_enabled ~= enabled
-
-    if not self.part_data.is_enabled and not changed and self.last_updated ~= 0 then
-        self.last_updated = frame_counter.frame
-        return
-    end
-
-    self.part_data.is_enabled = enabled
+    -- local changed = self.part_data.is_enabled ~= enabled
+    -- if
+    --     not self.part_data.is_enabled
+    --     and not changed
+    --     and self.last_updated ~= 0
+    --     and not update_all
+    -- then
+    --     self.last_updated = frame_counter.frame
+    --     return
+    -- end
 
     if
         self.part_data.can_break
         and not self.part_data.is_broken
-        and (not conds or conds[mod_enum.condition_type.Break])
+        and (update_all or conds[mod_enum.condition_type.Break])
     then
         if self.part_data.can_lost then
             self.part_data.is_broken =
@@ -158,13 +163,13 @@ function this:update(conds)
     end
 
     if
-        self.part_data.can_mystery_core and (not conds or conds[mod_enum.condition_type.Mystery])
+        self.part_data.can_mystery_core and (update_all or conds[mod_enum.condition_type.Mystery])
     then
         self.part_data.is_mystery_core =
             self.part_data._enemy_base:isActiveMysteryCoreParts(self.part_data.part_group)
     end
 
-    if not conds then
+    if update_all then
         self:_update_hitzones()
     elseif conds[mod_enum.condition_type.Element] then
         for _, cond in pairs(conds[mod_enum.condition_type.Element]) do

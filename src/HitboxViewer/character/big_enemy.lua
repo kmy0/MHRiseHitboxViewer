@@ -80,12 +80,7 @@ function this:update_hurtboxes()
 
     local ret = {}
     if config.gui.current.gui.hurtbox_info.is_opened or not conditions:empty() then
-        ---@type table<ConditionType, ConditionBase[]>?>
-        local conds
-        if not config.gui.current.gui.hurtbox_info.is_opened then
-            conds = conditions.get_all()
-        end
-
+        local conds = conditions.get_all()
         if self.pg_queue:empty() then
             self.pg_queue:extend_back(util_table.keys(self.parts))
         end
@@ -93,7 +88,7 @@ function this:update_hurtboxes()
         for part_key in self.pg_queue:iter(config.max_part_group_updates) do
             local part_group = self.parts[part_key]
             if part_group then
-                part_group:update(conds)
+                part_group:update(config.gui.current.gui.hurtbox_info.is_opened, conds)
             end
         end
     else

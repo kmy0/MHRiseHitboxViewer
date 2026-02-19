@@ -27,7 +27,7 @@ function this.get(cond_type)
     return this.by_type[cond_type]
 end
 
----@return table<ConditionType, ConditionBase[]>?
+---@return table<ConditionType, ConditionBase[]>
 function this.get_all()
     return this.by_type
 end
