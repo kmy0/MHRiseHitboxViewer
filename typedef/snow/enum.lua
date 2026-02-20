@@ -2,7 +2,10 @@
 
 ---@class via.Language : System.Enum
 ---@class via.physics.ShapeType : System.Enum
+---@class via.hid.KeyboardKey : System.Enum
 
+---@class snow.Pad.Button : System.Enum
+---@class snow.StmInputManager.ActiveDevice : System.Enum
 ---@class snow.player.PlayerIndex : System.Enum
 ---@class snow.enemy.EnemyDef.EmTypes : System.Enum
 ---@class snow.ai.ServantDefine.ServantId : System.Enum

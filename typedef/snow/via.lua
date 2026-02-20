@@ -23,6 +23,7 @@
 
 ---@class via.Scene : via.clr.ManagedObject
 ---@field get_FrameCount fun(self: via.Scene): System.UInt32
+---@field set_TimeScale fun(self: via.Scene, scale: System.Single)
 
 ---@class via.SceneView : via.clr.ManagedObject
 ---@field get_PrimaryCamera fun(self: via.SceneView): via.Camera
@@ -37,6 +38,7 @@
 
 ---@class via.Application : NativeSingleton
 ---@field get_DeltaTime fun(self: via.Application): System.Single
+---@field set_GlobalSpeed fun(self: via.Application, value: System.Single)
 
 ---@class via.GameObject : via.clr.ManagedObject
 ---@field get_Name fun(self: via.GameObject): System.String

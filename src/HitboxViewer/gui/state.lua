@@ -1,6 +1,7 @@
 ---@class GuiState
 ---@field combo GuiCombo
 ---@field set ImguiConfigSet
+---@field listener NewBindListener?
 
 ---@class (exact) GuiCombo
 ---@field condition_type Combo
@@ -11,6 +12,13 @@
 ---@field element Combo
 ---@field draw_state Combo
 ---@field shape Combo
+---@field action Combo
+
+---@class (exact) NewBindListener
+---@field opt string
+---@field opt_name string
+---@field listener BindListener
+---@field collision string?
 
 local combo = require("HitboxViewer.gui.combo")
 local config = require("HitboxViewer.config.init")
@@ -19,6 +27,7 @@ local data = require("HitboxViewer.data.init")
 local util_table = require("HitboxViewer.util.misc.table")
 
 local mod_enum = data.mod.enum
+local mod_map = data.mod.map
 
 ---@class GuiState
 local this = {
@@ -133,7 +142,18 @@ local this = {
                 return config.lang:tr("mod.combo_shape." .. mod_enum.shape_dummy[key])
             end
         ),
+        action = combo:new(
+            mod_map.actions,
+            function(a, b)
+                return a.key < b.key
+            end,
+            nil,
+            function(key)
+                return config.lang:tr(mod_map.actions[key])
+            end
+        ),
     },
+
     set = config_set:new(config),
 }
 

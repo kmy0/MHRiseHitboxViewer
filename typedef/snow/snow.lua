@@ -178,3 +178,21 @@
 ---@class snow.player.DamageReflexInfo : via.clr.ManagedObject
 ---@field get_CheckType fun(self: snow.player.DamageReflexInfo): snow.player.DamageReflexInfo.Type
 ---@field _IsChecking System.Boolean
+
+---@class snow.GameKeyboard : snow.SnowSingletonBehaviorRoot
+---@field hardKeyboard snow.GameKeyboard.HardwareKeyboard
+
+---@class snow.GameKeyboard.HardwareKeyboard : via.clr.ManagedObject
+---@field getDown fun(self: snow.GameKeyboard.HardwareKeyboard, key_enum: via.hid.KeyboardKey): System.Boolean
+
+---@class snow.Pad : snow.SnowSingletonBehaviorRoot
+---@field hard snow.Pad.Device
+
+---@class snow.Pad.Device : via.clr.ManagedObject
+---@field get_on fun(self: snow.Pad.Device): snow.Pad.Button
+
+---@class snow.StmInputManager.ActiveGameDevice : via.clr.ManagedObject
+---@field _ActiveDevice snow.StmInputManager.ActiveDevice
+
+---@class snow.StmInputManager : snow.SnowSingletonBehaviorRoot
+---@field _ActiveDevice snow.StmInputManager.ActiveGameDevice
