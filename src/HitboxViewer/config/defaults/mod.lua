@@ -309,8 +309,8 @@ return function(default_color, default_highlight_color, default_collision_color)
                 color = default_color,
             },
             trailboxes = {
-                draw_dur = 60,
-                step = 2,
+                draw_dur = 2,
+                step = 0.001,
                 fade = true,
                 outline = true,
             },

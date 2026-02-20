@@ -83,12 +83,6 @@ function this:update()
         table.insert(ret, self)
     end
 
-    local trail = self.guard_box:update_trail()
-    if trail then
-        ret = {}
-        table.move(trail, 1, #trail, #ret + 1, ret)
-    end
-
     if box_state == mod_enum.box_state.Draw then
         local guard_state = self.guard_box:update()
         if guard_state == mod_enum.box_state.Draw then
@@ -96,6 +90,15 @@ function this:update()
             table.insert(ret, self.guard_box)
         end
     end
+
+    local trail = self.guard_box:update_trail()
+    if trail then
+        if not ret then
+            ret = {}
+        end
+        table.move(trail, 1, #trail, #ret + 1, ret)
+    end
+
     return box_state, ret
 end
 

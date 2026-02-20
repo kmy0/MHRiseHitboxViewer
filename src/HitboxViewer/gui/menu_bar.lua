@@ -230,9 +230,15 @@ local function draw_timescale_menu()
 end
 
 local function draw_settings_menu()
+    imgui.spacing()
+    imgui.indent(2)
+
     draw_menu(gui_util.tr("menu.settings.draw.name"), draw_draw_menu)
     draw_menu(gui_util.tr("menu.settings.trail.name"), draw_trail_menu)
     draw_menu(gui_util.tr("menu.settings.timescale.name"), draw_timescale_menu)
+
+    imgui.unindent(2)
+    imgui.spacing()
 end
 
 local function draw_bind_menu()

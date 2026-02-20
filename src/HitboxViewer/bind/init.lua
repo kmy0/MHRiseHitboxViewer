@@ -21,7 +21,6 @@ this.manager_names = {
 
 ---@param bind ModBind
 local function action(bind)
-    print(bind.bound_value)
     local fn = actions[bind.bound_value] --[[@as fun(bind: Bind, monitor: BindMonitor)]]
     if fn then
         fn(bind, this.monitor)

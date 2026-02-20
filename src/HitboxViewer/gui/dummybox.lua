@@ -177,7 +177,6 @@ function this.draw()
                 180
             )
             shape_data.rot = euler_to_matrix(rot)
-        elseif shape == mod_enum.shape.Triangle then
         end
 
         imgui.pop_item_width()
