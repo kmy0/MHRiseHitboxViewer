@@ -99,7 +99,7 @@ end
 function this.queues()
     char.get()
     box.get()
-    call_queue.execute()
+    call_queue:execute()
 end
 
 function this.clear()

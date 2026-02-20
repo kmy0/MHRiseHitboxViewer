@@ -278,4 +278,26 @@ function this:is_valid(char)
     return ret
 end
 
+function this:iter_all_boxes()
+    local boxes = {
+        self.hitboxes,
+        self.hurtboxes,
+        self.pressboxes,
+        self.collisionboxes,
+        self.dummyboxes,
+    }
+    local box_index = 1
+    local key = nil
+    return function()
+        while box_index <= #boxes do
+            key = next(boxes[box_index], key)
+            if key ~= nil then
+                return boxes[box_index][key]
+            end
+            box_index = box_index + 1
+            key = nil
+        end
+    end
+end
+
 return this

@@ -185,7 +185,7 @@ function this.queue_dead_box_trail_update(_, box)
         return true
     end
 
-    call_queue.push_back(update)
+    call_queue:push_back(update)
 end
 
 return this

@@ -1,9 +1,26 @@
+local call_queue = require("HitboxViewer.util.misc.call_queue")
+local char = require("HitboxViewer.character.init")
 local config = require("HitboxViewer.config.init")
 local gui_util = require("HitboxViewer.gui.util")
 local set = require("HitboxViewer.util.imgui.config_set"):new(config)
 local util_imgui = require("HitboxViewer.util.imgui.init")
 
 local this = {}
+
+---@return boolean
+local function resize_trail_buffers()
+    if not config.save_timer:active() then
+        for box in char:iter_all_boxes() do
+            if box.trail_buffer then
+                box.trail_buffer:resize(
+                    math.ceil(config.max_trail_dur / config.current.mod.trailboxes.step)
+                )
+            end
+        end
+        return false
+    end
+    return true
+end
 
 function this.draw()
     imgui.spacing()
@@ -31,17 +48,22 @@ function this.draw()
     util_imgui.tooltip(config.lang:tr("menu.draw_settings.tooltip_box_fade"), true)
     set:checkbox(gui_util.tr("menu.draw_settings.box_outline", "trail"), "mod.trailboxes.outline")
 
-    set:slider_float(
-        "##menu.draw_settings.slider_step",
-        "mod.trailboxes.step",
-        0.001,
-        config.max_trail_dur,
-        string.format(
-            "%s %s",
-            config.lang:tr("menu.draw_settings.slider_step"),
-            gui_util.seconds_to_minutes_string(config.current.mod.trailboxes.step, "%.3f")
-        )
-    )
+    if
+        set:slider_float(
+            "##menu.draw_settings.slider_step",
+            "mod.trailboxes.step",
+            0.001,
+            config.max_trail_dur,
+            string.format(
+                "%s %s",
+                config.lang:tr("menu.draw_settings.slider_step"),
+                gui_util.seconds_to_minutes_string(config.current.mod.trailboxes.step, "%.3f")
+            )
+        ) and not call_queue:has(resize_trail_buffers)
+    then
+        call_queue:push_back(resize_trail_buffers)
+    end
+
     set:slider_float(
         gui_util.tr("menu.draw_settings.slider_draw_dur", "trailboxes"),
         "mod.trailboxes.draw_dur",
