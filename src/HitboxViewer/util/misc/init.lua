@@ -2,7 +2,6 @@ local this = require("HitboxViewer.util.misc.util")
 
 this.init_chain = require("HitboxViewer.util.misc.init_chain")
 this.table = require("HitboxViewer.util.misc.table")
-this.timer = require("HitboxViewer.util.misc.timer")
 this.uuid = require("HitboxViewer.util.misc.uuid")
 this.circular_buffer = require("HitboxViewer.util.misc.circular_buffer")
 this.logger = require("HitboxViewer.util.misc.logger")

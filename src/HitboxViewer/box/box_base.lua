@@ -42,7 +42,6 @@ local circular_buffer = require("HitboxViewer.util.misc.circular_buffer")
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
 local draw_queue = require("HitboxViewer.draw_queue")
-local frame_counter = require("HitboxViewer.util.misc.frame_counter")
 local trail_box = require("HitboxViewer.box.trail")
 local util_table = require("HitboxViewer.util.misc.table")
 
@@ -101,7 +100,9 @@ function this:new(box_type, shape_type)
         type = box_type,
         shape_type = shape_type,
         shape_data = shape_data,
-        trail_buffer = circular_buffer:new(config.max_trail_dur),
+        trail_buffer = circular_buffer:new(
+            math.ceil(config.max_trail_dur / config.current.mod.trailboxes.step)
+        ),
         last_pos = Vector3f.new(0, 0, 0),
         any_trail = true,
     }
@@ -145,7 +146,7 @@ function this:update_trail()
     local last_trail = self.trail_buffer:front() --[[@as TrailBox?]]
     if
         not disabled
-        and (not last_trail or (frame_counter.frame - last_trail.frame >= config.current.mod.trailboxes.step))
+        and (not last_trail or (last_trail.timer:elapsed() >= config.current.mod.trailboxes.step))
         and (self.last_pos - self.pos):length() > 0.1
     then
         self:add_trail()

@@ -31,30 +31,23 @@ function this.draw()
     util_imgui.tooltip(config.lang:tr("menu.draw_settings.tooltip_box_fade"), true)
     set:checkbox(gui_util.tr("menu.draw_settings.box_outline", "trail"), "mod.trailboxes.outline")
 
-    set:slider_int(
+    set:slider_float(
         "##menu.draw_settings.slider_step",
         "mod.trailboxes.step",
-        1,
-        config.max_trail_dur,
-        string.format(
-            "%s %s %s",
-            config.lang:tr("menu.draw_settings.slider_step"),
-            config.current.mod.trailboxes.step,
-            config.current.mod.trailboxes.step == 1 and config.lang:tr("misc.text_frame")
-                or config.lang:tr("misc.text_frame_plural")
-        )
-    )
-    set:slider_int(
-        gui_util.tr("menu.draw_settings.slider_draw_dur", "trailboxes"),
-        "mod.trailboxes.draw_dur",
-        1,
+        0.001,
         config.max_trail_dur,
         string.format(
             "%s %s",
-            config.current.mod.trailboxes.draw_dur,
-            config.current.mod.trailboxes.draw_dur == 1 and config.lang:tr("misc.text_frame")
-                or config.lang:tr("misc.text_frame_plural")
+            config.lang:tr("menu.draw_settings.slider_step"),
+            gui_util.seconds_to_minutes_string(config.current.mod.trailboxes.step, "%.3f")
         )
+    )
+    set:slider_float(
+        gui_util.tr("menu.draw_settings.slider_draw_dur", "trailboxes"),
+        "mod.trailboxes.draw_dur",
+        0.001,
+        config.max_trail_dur,
+        gui_util.seconds_to_minutes_string(config.current.mod.trailboxes.draw_dur, "%.3f")
     )
 
     imgui.pop_item_width()

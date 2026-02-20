@@ -45,8 +45,10 @@ return {
         text_distance = "Distance",
         text_from = "From",
         text_to = "To",
-        text_frame = "Frame",
-        text_frame_plural = "Frames",
+        text_second = "Second",
+        text_second_plural = "Seconds",
+        text_minute = "Minute",
+        text_minute_plural = "Minutes",
     },
     mod = {
         header_hurtboxes = "Hurtboxes",

@@ -5,12 +5,12 @@
 ---@field o_outline_color integer
 ---@field outline_color integer
 ---@field draw_outline boolean
----@field frame integer
----@field life integer
+---@field timer Timer
+---@field updated boolean
 
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
-local frame_counter = require("HitboxViewer.util.misc.frame_counter")
+local timer = require("HitboxViewer.util.misc.timer")
 local util_game = require("HitboxViewer.util.game.init")
 
 local mod_enum = data.mod.enum
@@ -30,8 +30,7 @@ function this:new(box, life)
         o_outline_color = config.current.mod.draw.outline_color,
         outline_color = config.current.mod.draw.outline_color,
         draw_outline = config.current.mod.trailboxes.outline,
-        frame = frame_counter.frame,
-        life = life,
+        timer = timer:new(life, nil, true, false, true, "time_delta"),
         shape_data = {},
         shape_type = box.shape_type,
         type = box.type,
@@ -39,6 +38,7 @@ function this:new(box, life)
         pos = box.pos:clone(),
         sort = -1,
         is_enabled = true,
+        updated = false,
     }
     ---@cast o TrailBox
     setmetatable(o, self)
@@ -67,8 +67,7 @@ end
 ---@param color integer
 ---@return integer
 function this:_update_color(color)
-    local age = frame_counter.frame - self.frame
-    local life_ratio = 1.0 - (age / self.life)
+    local life_ratio = 1.0 - (self.timer:elapsed() / self.timer.timeout)
 
     local a = math.floor(((color >> 24) & 0xFF) * life_ratio)
     local r = (color >> 16) & 0xFF --[[@as integer]]
@@ -80,7 +79,7 @@ end
 
 ---@return BoxState
 function this:update_data()
-    if frame_counter.frame - self.frame > self.life then
+    if self.updated and self.timer:finished() then
         return mod_enum.box_state.Dead
     end
 
@@ -89,6 +88,7 @@ function this:update_data()
         self.outline_color = self:_update_color(self.o_outline_color)
     end
 
+    self.updated = true
     return mod_enum.box_state.Draw
 end
 

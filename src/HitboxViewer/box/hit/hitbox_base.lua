@@ -1,12 +1,12 @@
 ---@class (exact) HitBoxBase : CollidableBase
 ---@field log_entry AttackLogEntry
 ---@field is_shown boolean
----@field tick integer
+---@field timer Timer
 
 local colldable_base = require("HitboxViewer.box.collidable_base")
 local config = require("HitboxViewer.config.init")
 local data = require("HitboxViewer.data.init")
-local frame_counter = require("HitboxViewer.util.misc.frame_counter")
+local timer = require("HitboxViewer.util.misc.timer")
 local util_imgui = require("HitboxViewer.util.imgui.init")
 
 local mod_enum = data.mod.enum
@@ -43,7 +43,7 @@ function this:new(collidable, parent, resource_idx, set_idx, collidable_idx, log
     setmetatable(o, self)
     o.log_entry = log_entry
     o.is_shown = false
-    o.tick = frame_counter.frame
+    o.timer = timer:new(20, nil, true, false, false, "time_delta")
     return o
 end
 
@@ -89,7 +89,7 @@ end
 
 ---@return BoxState
 function this:update()
-    if frame_counter.frame - self.tick > 1200 then
+    if self.timer:finished() then
         return mod_enum.box_state.Dead
     end
 

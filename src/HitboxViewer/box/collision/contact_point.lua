@@ -1,9 +1,10 @@
 ---@class ContactPoint : BoxBase
----@field draw_timer FrameTimer
+---@field timer Timer
+---@field updated boolean
 
 local box_base = require("HitboxViewer.box.box_base")
 local data = require("HitboxViewer.data.init")
-local frame_timer = require("HitboxViewer.util.misc.frame_timer")
+local timer = require("HitboxViewer.util.misc.timer")
 
 local mod_enum = data.mod.enum
 
@@ -25,8 +26,8 @@ function this:new(pos, radius, color, draw_duration)
     o.shape_data.pos = pos
     o.shape_data.radius = radius
     o.color = color
-    o.draw_timer = frame_timer:new(draw_duration)
-    o.draw_timer:start()
+    o.timer = timer:new(draw_duration, nil, true, false, false, "time_delta")
+    o.updated = false
 
     return o
 end
@@ -36,15 +37,16 @@ function this:is_trail_disabled()
 end
 
 function this:remove()
-    self.draw_timer:abort()
+    self.timer:abort()
 end
 
 ---@return BoxState
 function this:update()
-    if self.draw_timer:finished() or not self.draw_timer:active() then
+    if self.updated and self.timer:finished() or not self.timer:active() then
         return mod_enum.box_state.Dead
     end
 
+    self.updated = true
     return mod_enum.box_state.Draw
 end
 
