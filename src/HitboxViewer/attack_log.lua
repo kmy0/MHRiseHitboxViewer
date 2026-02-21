@@ -6,6 +6,9 @@
 ---@field userdata_shape snow.hit.userdata.BaseHitAttackShapeData
 ---@field resource_path string
 ---@field resource_idx integer
+---@field set_idx integer
+---@field collidable_idx integer
+---@field userdata via.physics.UserData
 
 ---@class (exact) AttackLogEntryData
 ---@field motion_value integer
@@ -185,8 +188,18 @@ end
 ---@param userdata_shape snow.hit.userdata.BaseHitAttackShapeData
 ---@param rsc snow.RSCController
 ---@param resource_idx integer
+---@param set_idx integer
+---@param collidable_idx integer
 ---@return AttackLogEntryWithTimestamp?
-function this.get_log_entry(char, userdata, userdata_shape, rsc, resource_idx)
+function this.get_log_entry(
+    char,
+    userdata,
+    userdata_shape,
+    rsc,
+    resource_idx,
+    set_idx,
+    collidable_idx
+)
     if char.hitbox_userdata_cache[userdata] then
         return this.attach_timestamp_to_log_entry(char.hitbox_userdata_cache[userdata])
     end
@@ -225,6 +238,9 @@ function this.get_log_entry(char, userdata, userdata_shape, rsc, resource_idx)
         resource_idx = resource_idx,
         resource_path = resource:get_ResourcePath(),
         userdata_shape = userdata_shape,
+        set_idx = set_idx,
+        collidable_idx = collidable_idx,
+        userdata = userdata,
     }
 
     local attack_log_entry = util_table.merge(entry_base, entry_data) --[[@as AttackLogEntry]]

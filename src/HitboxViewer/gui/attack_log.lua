@@ -97,10 +97,13 @@ local function draw_table()
                         draw_more_data(
                             entry.more_data,
                             string.format(
-                                "%s, %s - %s",
+                                "%s, %s - %s, %s, %s, %s",
                                 entry.char_name,
                                 entry.char_id,
-                                entry.attack_id
+                                entry.attack_id,
+                                entry.resource_idx,
+                                entry.set_idx,
+                                entry.collidable_idx
                             ),
                             i
                         )

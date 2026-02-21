@@ -97,7 +97,9 @@ function this.get()
                 userdata,
                 userdata_shape,
                 load_data.rsc,
-                resource_idx
+                resource_idx,
+                set_idx,
+                collidable_idx
             )
 
             if
