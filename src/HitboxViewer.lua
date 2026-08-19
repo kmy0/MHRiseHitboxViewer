@@ -12,11 +12,12 @@ local util_imgui = require("HitboxViewer.util.imgui.init")
 local util_misc = require("HitboxViewer.util.misc.init")
 local logger = util_misc.logger.g
 local bind = require("HitboxViewer.bind.init")
+local init_chain = require("HitboxViewer.config.init_chain")
 local timescale = require("HitboxViewer.util.game.timescale")
 
 ---@class MethodUtil
 local m = require("HitboxViewer.util.ref.methods")
-local init = util_misc.init_chain:new(
+local init = init_chain:new(
     "MAIN",
     data.init,
     config.init,
@@ -63,6 +64,10 @@ re.on_draw_ui(function()
     else
         imgui.same_line()
         imgui.text_colored("Init failed!", data.gui.colors.bad)
+        local errors = logger:get_last_error()
+        if errors then
+            util_imgui.tooltip_exclamation(errors)
+        end
     end
 end)
 
